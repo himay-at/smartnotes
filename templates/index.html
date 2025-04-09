@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ask GPT</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 2rem; }
+    textarea, input, button { width: 100%; margin-top: 1rem; font-size: 1rem; }
+  </style>
+</head>
+<body>
+  <h2>Ask GPT</h2>
+  <form id="chat-form">
+    <textarea id="question" rows="4" placeholder="Type your question..."></textarea>
+    <button type="submit">Ask</button>
+  </form>
+  <h3>Response:</h3>
+  <pre id="response"></pre>
+
+  <script>
+    const form = document.getElementById('chat-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const question = document.getElementById('question').value;
+
+      const res = await fetch('/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
+
+      const data = await res.json();
+      document.getElementById('response').textContent = data.answer || "Something went wrong.";
+    });
+  </script>
+</body>
+</html>
